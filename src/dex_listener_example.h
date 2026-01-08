@@ -24,6 +24,7 @@ class dex_callbacks : public rakurai::dex_connector::dex_listener
  private:
    std::shared_ptr<rakurai::dex_connector::dex_handler>               _dex_handler;
    std::shared_ptr<rakurai::dex_connector::trading_session_interface> _trade_sess_interface;
+   rakurai::dex_connector::order_entry::new_order                     _new_ord;
    uint                                                               _update_count = 0;
 };
 

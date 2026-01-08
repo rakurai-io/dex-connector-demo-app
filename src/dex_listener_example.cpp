@@ -160,14 +160,30 @@ void dex_callbacks::config()
       auto        config = dex_configuration_itr->GetObject();
       std::string dex    = config["id"].GetString();
 
-      if (dex.compare("orca") == 0)
+      if (dex.compare("orca_clmm") == 0)
       {
-         dex_config.dex_name = rakurai::dex_connector::data_types::venue::orca;
+         dex_config.dex_name = rakurai::dex_connector::data_types::venue::orca_clmm;
          dex_config.pool_typ = rakurai::dex_connector::data_types::pool_type::clmm;
       }
-      else if (dex.compare("raydium") == 0)
+      else if (dex.compare("orca_amm") == 0)
       {
-         dex_config.dex_name = rakurai::dex_connector::data_types::venue::raydium;
+         dex_config.dex_name = rakurai::dex_connector::data_types::venue::orca_amm;
+         dex_config.pool_typ = rakurai::dex_connector::data_types::pool_type::amm;
+      }
+      else if (dex.compare("raydium_amm") == 0)
+      {
+         dex_config.dex_name = rakurai::dex_connector::data_types::venue::raydium_amm;
+         dex_config.pool_typ = rakurai::dex_connector::data_types::pool_type::amm;
+      }
+      else if (dex.compare("raydium_cpmm") == 0)
+      {
+         dex_config.dex_name = rakurai::dex_connector::data_types::venue::raydium_cpmm;
+         dex_config.pool_typ = rakurai::dex_connector::data_types::pool_type::cpmm;
+      }
+      else if (dex.compare("raydium_clmm") == 0)
+      {
+         dex_config.dex_name = rakurai::dex_connector::data_types::venue::raydium_clmm;
+         dex_config.pool_typ = rakurai::dex_connector::data_types::pool_type::clmm;
       }
       else
       {
@@ -218,7 +234,7 @@ void dex_callbacks::on_pool_definition(rakurai::dex_connector::data_types::venue
    for (const auto *sec : securities)
    {
       SPDLOG_DEBUG(
-         "Pool ID: {}, Venue: {}, Pool Type: {}, Fee Rate BPS: {}",
+         "Pool ID: {}, Venue: {}, Fee Rate BPS: {}",
          [&]() {
             std::ostringstream oss;
             for (unsigned char each_byte : sec->pool_id)
@@ -227,7 +243,7 @@ void dex_callbacks::on_pool_definition(rakurai::dex_connector::data_types::venue
             }
             return oss.str();
          }(),
-         static_cast<int>(sec->venue), static_cast<int>(sec->pool_type), sec->fee_rate_bps);
+         static_cast<int>(sec->venue), sec->fee_rate_bps);
    }
 }
 
@@ -235,8 +251,8 @@ void dex_callbacks::on_book(rakurai::dex_connector::data_types::venue venu, cons
                             const std::vector<rakurai::dex_connector::data_types::book_level> &bids,
                             const std::vector<rakurai::dex_connector::data_types::book_level> &asks)
 {
-   SPDLOG_TRACE("On Book update callback | Count: {}", _update_count);
-   SPDLOG_INFO("Book update no {} for Pool ID: {}", (_update_count + 1), [&]() {
+   ++_update_count;
+   SPDLOG_INFO("Book update no {} for Pool ID: {}", (_update_count), [&]() {
       std::ostringstream oss;
       for (unsigned char each_byte : pool_id)
       {
@@ -262,6 +278,19 @@ void dex_callbacks::on_book(rakurai::dex_connector::data_types::venue venu, cons
    {
       SPDLOG_DEBUG("#{},{},{}", count, each_value.price, each_value.quantity);
       ++count;
+   }
+
+   if (_update_count % 5 == 0)  // Send an order every 5th book update
+   {
+      SPDLOG_INFO("Placing new order");
+      _new_ord.order_def.pool_id    = pool_id;
+      _new_ord.order_def.order_side = rakurai::dex_connector::order_entry::side::sell;
+      _new_ord.order_def.dex        = rakurai::dex_connector::data_types::venue::orca_clmm;
+      _new_ord.qty                  = 1000;  // 1000 lamports
+      _new_ord.priority_fee         = 1000;  // 1000 lamports
+
+      // _trade_sess_interface->launch_new_order(_new_ord);  // Uncomment this line to place actual order
+      SPDLOG_INFO("Launched new order");
    }
 }
 
