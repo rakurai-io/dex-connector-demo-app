@@ -234,7 +234,7 @@ void dex_callbacks::on_pool_definition(rakurai::dex_connector::data_types::venue
    for (const auto *sec : securities)
    {
       SPDLOG_DEBUG(
-         "Pool ID: {}, Venue: {}, Fee Rate BPS: {}",
+         "Pool ID: {}, Venue: {}, Fee Rate BPS: {}, Min Tick: {}, Min Trade Amount: {}",
          [&]() {
             std::ostringstream oss;
             for (unsigned char each_byte : sec->pool_id)
@@ -243,7 +243,7 @@ void dex_callbacks::on_pool_definition(rakurai::dex_connector::data_types::venue
             }
             return oss.str();
          }(),
-         static_cast<int>(sec->venue), sec->fee_rate_bps);
+         static_cast<int>(sec->venue), sec->fee_rate_bps, sec->min_tick, sec->min_trade_amount);
    }
 }
 

@@ -7,15 +7,15 @@
     "dex": [
         {
             "id": "orca_clmm",
-            "pool_ids": ["4HppGTweoGQ8ZZ6UcCgwJKfi5mJD9Dqwy6htCpnbfBLW"
+            "pool_ids": ["Czfq3xZZDmsdGdUyrNLtRhGc47cXcZtLG4crryfu44zE", "4HppGTweoGQ8ZZ6UcCgwJKfi5mJD9Dqwy6htCpnbfBLW"
             ]
         }
     ],
     "cluster_mode": false,
     "wallet_pub": "HFru3Rc3Rf6UjZtrYPsBSKvmq5uyha2DWefV77rFXU64",
     "wallet_pvt": [168,123,234,72,218,209,180,225,42,193,240,65,11,15,105,91,95,255,231,214,188,119,90,45,119,144,177,207,203,245,250,27,241,137,138,138,103,247,64,134,70,212,107,134,75,97,87,167,53,32,169,108,75,126,254,17,213,216,74,14,245,28,231,161],
-    "md_server_uri_1": "ws://189.1.171.199:8130",
-    "node_oms_uri_1": "ws://189.1.171.199:8133",
+    "md_server_uri_1": "ws://185.191.117.159:8130",
+    "node_oms_uri_1": "ws://185.191.117.159:8133",
     "md_server_uri_2": "ws://189.1.171.199:8130",
     "node_oms_uri_2": "ws://189.1.171.199:8133",
     "core": 1
