@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:22.04
 
 LABEL Name=rakurai-dex-connector-demo Version=0.0.1 Maintainer=saad@rakurai.io
 
