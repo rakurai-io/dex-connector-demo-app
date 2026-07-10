@@ -215,8 +215,8 @@ void dex_callbacks::config()
 
    // Print the logs
 
-   _dex_handler = std::make_shared<rakurai::dex_connector::dex_handler>(
-      dex_config_list, wallet_config, logging_config, session_config.uri, session_config.core, cluster_mode, this);
+   _dex_handler = std::make_shared<rakurai::dex_connector::dex_handler>(dex_config_list, wallet_config, logging_config,
+                                                                        session_config, cluster_mode, this);
    _trade_sess_interface = std::make_shared<rakurai::dex_connector::trading_session_interface>(
       std::move(_dex_handler->create_new_trading_session()));
 }
