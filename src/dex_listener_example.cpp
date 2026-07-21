@@ -316,3 +316,8 @@ void dex_callbacks::on_ata_verification_status(const std::array<uint8_t, 32> &to
       }(),
       ata_address, static_cast<int>(status));
 }
+
+void dex_callbacks::on_disconnection(const rakurai::dex_connector::disconnected_session &sess)
+{
+   SPDLOG_INFO("On disconnection | Type: {}", static_cast<int>(sess.sess_type));
+}
